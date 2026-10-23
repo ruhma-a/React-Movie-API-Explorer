@@ -10,21 +10,24 @@ export default function App() {
   const [query, setQuery] = useState("");   
   const [search, setSearch] = useState(""); 
   
-  // New state for the modal
+  // Modal and pagination states
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [page, setPage] = useState(1); // New page state!
 
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
     setError(null);
     
+    // Pass the page state to API calls
     const request = search
-      ? searchMovies(search, controller.signal)
-      : getPopularMovies(controller.signal);
+      ? searchMovies(search, page, controller.signal)
+      : getPopularMovies(page, controller.signal);
       
     request
       .then((data) => { 
-        setMovies(data); 
+        // If we are on page 1, replace movies. Otherwise, add to the bottom!
+        setMovies(prev => page === 1 ? data : [...prev, ...data]); 
         setLoading(false); 
       })
       .catch((err) => {
@@ -34,7 +37,7 @@ export default function App() {
       });
       
     return () => controller.abort(); 
-  }, [search]); 
+  }, [search, page]); // Re-run whenever search OR page changes
 
   return (
     <div className="page-container">
@@ -51,6 +54,7 @@ export default function App() {
                     onSubmit={(e) => {
                         e.preventDefault();
                         setSearch(query.trim());
+                        setPage(1); // Reset to page 1 on a new search
                     }}
                 >
                     <input
@@ -63,7 +67,8 @@ export default function App() {
                 </form>
 
                 <div className="game">
-                    {loading && <p className="loading-text">Loading fun movies... 🌷</p>}
+                    {/* Only show initial loading text on page 1 */}
+                    {loading && page === 1 && <p className="loading-text">Loading fun movies... 🌷</p>}
                     {error && <p className="error-text">{error}</p>}
                     
                     {/* Empty State Implementation */}
@@ -73,16 +78,27 @@ export default function App() {
                         </div>
                     )}
                     
-                    {!loading && !error && movies.length > 0 && (
-                        <div className="game-board grid-layout">
-                            {movies.map((m) => (
-                                <MovieCard 
-                                    key={m.id} 
-                                    movie={m} 
-                                    onClick={() => setSelectedMovie(m)} 
-                                />
-                            ))}
-                        </div>
+                    {movies.length > 0 && (
+                        <>
+                            <div className="game-board grid-layout">
+                                {movies.map((m, index) => (
+                                    <MovieCard 
+                                        key={`${m.id}-${index}`} // Fixes duplicate keys on load more
+                                        movie={m} 
+                                        onClick={() => setSelectedMovie(m)} 
+                                    />
+                                ))}
+                            </div>
+                            
+                            {/* Load More Button */}
+                            <button 
+                                className="toggle-btn load-more-btn" 
+                                onClick={() => setPage(p => p + 1)}
+                                disabled={loading}
+                            >
+                                {loading ? "Growing... 🌱" : "Load more movies 🌻"}
+                            </button>
+                        </>
                     )}
                 </div>
             </div>

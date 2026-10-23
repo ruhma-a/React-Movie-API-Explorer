@@ -5,10 +5,10 @@ const tmdb = axios.create({
   headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}` },
 });
 
-export const getPopularMovies = (signal) =>
-  tmdb.get("/movie/popular", { signal }).then((res) => res.data.results);
+export const getPopularMovies = (page = 1, signal) =>
+  tmdb.get("/movie/popular", { params: { page }, signal }).then((res) => res.data.results);
 
-export const searchMovies = (query, signal) =>
+export const searchMovies = (query, page = 1, signal) =>
   tmdb
-    .get("/search/movie", { params: { query }, signal })
+    .get("/search/movie", { params: { query, page }, signal })
     .then((res) => res.data.results);
