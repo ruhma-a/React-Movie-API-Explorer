@@ -42,7 +42,12 @@ export default function App() {
   return (
     <div className="page-container">
         <div className="pretty-sidebar left">
-            <img src="https://i.pinimg.com/1200x/42/44/2b/42442b80d83cff744aaa9a2d24301b73.jpg" alt="adorable mushroom" className="cute-photo" />
+          <img 
+            src="https://i.pinimg.com/1200x/42/44/2b/42442b80d83cff744aaa9a2d24301b73.jpg" 
+            alt="adorable mushroom" 
+            className="cute-photo" 
+            style={{ maxWidth: "250px", maxHeight: "300px", objectFit: "cover" }} 
+          />
         </div>
 
         <div className="center-layout">
