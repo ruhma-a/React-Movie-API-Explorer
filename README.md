@@ -1,14 +1,14 @@
 # Little Movie Explorer 🍂 (React Movie API Explorer)
 
 ## Description
-This is a lightweight React web application built with Vite that uses Axios to fetch and display movie data from the TMDB API. Based on the "API Demo Project" lesson plan, this application allows users to view popular movies and search for specific titles within a cozy, relaxing interface.
+Created for Assignment 4 of my Web Development course, this is a lightweight React web application built with Vite that uses Axios to fetch and display movie data from the TMDB API. Based on the "API Demo Project" lesson plan, this application allows users to view popular movies and search for specific titles within a cozy, relaxing interface.
 
 ## Live Demo
 This project is currently deployed and hosted on Vercel. You can view and interact with the live application here:
 [React Movie API Explorer - Live Demo](https://react-movie-api-explorer.vercel.app/)
 
 ## Features
-This project implements the core API functionalities and all specific rubric requirements for Assignment 4:
+This project implements the core API functionalities and other project requirements:
 * **Live Search:** Includes a working search functionality and form to query the database.
 * **Empty State Handling:** Shows a custom empty state message (e.g., “No results for ‘xyz’”) when a search returns nothing.
 * **Movie Detail View:** Features a clickable modal that displays the movie's overview description directly from the API data.
